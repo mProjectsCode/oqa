@@ -12,7 +12,7 @@
 		const commandRes = parseCommandStr(command);
 
 		if (commandRes.success) {
-			history.pushState({}, '', '/oqa');
+			history.pushState({}, '', '/');
 			window.location.replace(commandRes.redirect);
 		} else {
 			error = commandRes;
@@ -37,7 +37,7 @@
 			if (e.key === 'Enter') submitCommand(command);
 		}}
 	/>
-	<button on:click={() => submitCommand(command)}>Jump!</button>
+	<button on:click={() => submitCommand(command)}>Access!</button>
 </div>
 
 {#if error}
