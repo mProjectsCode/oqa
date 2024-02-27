@@ -1,0 +1,30 @@
+{
+	"name": "ojt",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "astro dev",
+		"start": "astro dev",
+		"build": "astro check && astro build",
+		"preview": "astro preview",
+		"astro": "astro",
+		"format": "prettier --write ."
+	},
+	"dependencies": {
+		"@astrojs/check": "^0.5.6",
+		"@astrojs/svelte": "^5.1.0",
+		"@types/slug": "^5.0.7",
+		"@lemons_dev/parsinom": "^0.0.12",
+		"astro": "^4.4.5",
+		"slug": "^8.2.3",
+		"svelte": "^4.2.12",
+		"typescript": "^5.3.3",
+		"prettier": "^3.1.1",
+		"prettier-plugin-astro": "^0.12.2",
+		"prettier-plugin-svelte": "^3.1.2"
+	},
+	"devDependencies": {
+		"@types/bun": "^1.0.8",
+		"sass": "^1.71.1"
+	}
+}

@@ -1,0 +1,590 @@
+@use 'sass:color';
+
+@import 'reset';
+
+// roboto from google fonts
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+$color-yellow: #f6e58d;
+$color-orange: #ffbe76;
+$color-red: #ff7979;
+$color-green: #badc58;
+$color-blue: #7ed6df;
+$color-purple: #e056fd;
+
+$accent-color: $color-green;
+
+$font-color-light: #f0f0f0;
+$font-color: #d0d0d0;
+$font-color-dark: #a0a0a0;
+
+$bg-color: #000000;
+$bg-color-2: #232330;
+
+$bg-light: #e0e0e0;
+$bg-light-active: #e0e0e0;
+
+$size-1: 1px;
+$size-2: 2px;
+$size-4: 4px;
+$size-8: 8px;
+$size-12: 12px;
+$size-16: 16px;
+$size-24: 24px;
+$size-32: 32px;
+$size-48: 48px;
+
+:root {
+	color-scheme: dark;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	font-family: 'Roboto', sans-serif;
+	line-height: 1.3;
+	color: $font-color;
+
+	background-color: $bg-color;
+
+	display: flex;
+	justify-content: center;
+}
+
+main {
+	max-width: 500px;
+	min-width: 500px;
+}
+
+hr {
+	border: 1px solid $bg-light;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: bold;
+	margin-top: 2em;
+	margin-bottom: 1em;
+	color: $font-color-light;
+}
+
+h1 {
+	font-size: 3em;
+}
+
+h2 {
+	font-size: 1.5em;
+}
+
+h3 {
+	font-size: 1.25em;
+}
+
+h4 {
+	font-size: 1.2em;
+}
+
+h5 {
+	font-size: 1.15em;
+}
+
+h6 {
+	font-size: 1.1em;
+}
+
+p {
+	margin-block: 1em;
+	color: $font-color;
+}
+
+b {
+	font-weight: bold;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.bold-strong {
+	font-weight: bolder;
+}
+
+.underline {
+	text-decoration: underline;
+}
+
+.flex-row {
+	display: flex;
+	align-items: center;
+}
+
+.flex-column {
+	display: flex;
+	flex-direction: column;
+}
+
+.gap {
+	gap: $size-8;
+}
+
+.text-error {
+	color: $color-red;
+}
+
+.text-success {
+	color: $color-green;
+}
+
+.text-warning {
+	color: $color-orange;
+}
+
+.text-danger {
+	color: $color-yellow;
+}
+
+.text-info {
+	color: $color-blue;
+}
+
+.text-light {
+	color: $font-color-light !important;
+}
+
+.tag {
+	padding: $size-8;
+	border-radius: $size-8;
+
+	span {
+		font-weight: bold;
+		color: $bg-color;
+	}
+}
+
+.error {
+	color: red !important;
+}
+
+.card {
+	padding: $size-16;
+	margin: $size-8;
+	border-radius: $size-16;
+	border: 1px solid $bg-light;
+}
+
+.container {
+	padding: $size-48 $size-32;
+	border-radius: $size-16;
+	border: 1px solid $bg-light;
+
+	& > :first-child {
+		margin-top: 0;
+	}
+
+	& > :last-child {
+		margin-bottom: 0;
+	}
+}
+
+.container-list {
+	display: flex;
+	flex-direction: column;
+	gap: $size-8;
+}
+
+.code-input {
+	width: 100%;
+	resize: vertical;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+
+	& > thead {
+		& > tr > th {
+			font-weight: bold;
+			color: $font-color;
+		}
+	}
+
+	tr {
+		border-bottom: 1px solid $bg-color-2;
+
+		& > td {
+			padding: $size-8;
+			color: $font-color-dark;
+		}
+
+		& > th {
+			padding: $size-8;
+			color: $font-color-dark;
+		}
+
+		&.text-error {
+			& > td {
+				color: $color-red;
+			}
+		}
+
+		&.text-warning {
+			& > td {
+				color: $color-orange;
+			}
+		}
+
+		&.text-danger {
+			& > td {
+				color: $color-yellow;
+			}
+		}
+
+		&.text-success {
+			& > td {
+				color: $color-green;
+			}
+		}
+
+		&.text-info {
+			& > td {
+				color: $color-blue;
+			}
+		}
+	}
+}
+
+.setting {
+	padding-block: $size-8;
+	border-bottom: 1px solid $bg-light;
+
+	.setting-items {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+
+		.setting-title {
+			padding-inline: $size-8;
+			flex: 1;
+
+			.setting-name {
+				color: $font-color;
+			}
+
+			.setting-description {
+				color: $font-color-dark;
+				font-size: small;
+			}
+		}
+
+		.setting-control-el {
+			padding-inline: $size-8;
+		}
+	}
+}
+
+.sub-setting-container {
+	margin-left: $size-16;
+}
+
+select {
+	background-color: transparent;
+	border: 1px solid $bg-light;
+	border-radius: $size-8;
+	padding: $size-8;
+	min-width: 200px;
+	color: $font-color;
+
+	&:hover {
+		border-color: $bg-light-active;
+	}
+
+	& > option {
+		padding: $size-8;
+		background-color: $bg-color;
+	}
+}
+
+.button {
+	padding: $size-8;
+	border: 1px solid $bg-light;
+	border-radius: $size-8;
+	background-color: transparent;
+	cursor: pointer;
+	color: $font-color;
+
+	&:disabled {
+		cursor: not-allowed;
+		color: $font-color-dark;
+	}
+
+	&:hover:not(:disabled) {
+		border-color: $bg-light-active;
+	}
+}
+
+.button-stealth {
+	padding: $size-8;
+	border-radius: $size-8;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	color: $font-color;
+
+	&:disabled {
+		cursor: not-allowed;
+		color: $font-color-dark;
+	}
+}
+
+.button-super-stealth {
+	padding: 0;
+	cursor: pointer;
+	border-radius: $size-8;
+	background-color: transparent;
+	border: none;
+	color: $font-color;
+}
+
+.button-link,
+a {
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	color: $font-color;
+	text-decoration: underline;
+
+	&:disabled {
+		cursor: not-allowed;
+		color: $font-color-dark;
+	}
+
+	&:hover:not(:disabled) {
+		color: $font-color-light;
+	}
+}
+
+.button-flex {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: $size-8;
+}
+
+.button-row-reverse {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: end;
+	gap: $size-8;
+	flex-wrap: wrap;
+	margin-block: $size-8;
+}
+
+.button-row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: start;
+	gap: $size-8;
+	flex-wrap: wrap;
+	margin-block: $size-8;
+}
+
+.modal {
+	margin: auto !important;
+	min-width: 500px;
+	width: fit-content;
+	background: $bg-color;
+	position: relative;
+
+	.modal-close-icon-wrapper {
+		position: absolute;
+		top: 12px;
+		right: 12px;
+		border-radius: $size-8;
+	}
+}
+
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 48px;
+	height: 24px;
+}
+
+.switch input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: $bg-light;
+	-webkit-transition: 0.1s;
+	transition: 0.1s;
+	border-radius: 24px;
+}
+
+.slider:before {
+	position: absolute;
+	content: '';
+	height: 16px;
+	width: 16px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	-webkit-transition: 0.1s;
+	transition: 0.1s;
+	border-radius: 50%;
+}
+
+input:checked + .slider {
+	background-color: $bg-light-active;
+}
+
+input:checked + .slider:before {
+	-webkit-transform: translateX(24px);
+	-ms-transform: translateX(24px);
+	transform: translateX(24px);
+}
+
+pre {
+	font-family: 'Roboto Mono', monospace;
+	color: $font-color-dark;
+	overflow-y: scroll;
+}
+
+.code-inline {
+	font-family: 'Roboto Mono', monospace;
+	color: $font-color-dark;
+	background-color: $bg-color-2;
+	padding-inline: $size-4;
+	border-radius: $size-4;
+}
+
+input[type='text'] {
+	background-color: transparent;
+	border: 1px solid $bg-light;
+	border-radius: $size-8;
+	padding: $size-8;
+	min-width: 200px;
+	color: $font-color;
+
+	&:hover {
+		border-color: $bg-light-active;
+	}
+
+	&:focus {
+		border-color: $bg-light-active;
+	}
+}
+
+ul {
+	li {
+		margin-block: $size-4;
+
+		&::before {
+			// counter-increment: list-item;
+			content: '-';
+			margin-inline: $size-8;
+		}
+	}
+}
+
+.block {
+	margin-block: $size-4;
+}
+
+.scroll-top-wrapper {
+	position: fixed;
+	bottom: 12px;
+	right: 12px;
+	border-radius: $size-4;
+	background: #000000;
+}
+
+.icon-button {
+	padding: $size-8;
+
+	& > .icon-wrapper {
+		width: $size-24;
+		height: $size-24;
+		min-width: $size-24;
+		min-height: $size-24;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		& > svg {
+			width: $size-16;
+			height: $size-16;
+		}
+	}
+}
+
+.command-input {
+	background-color: $bg-color-2;
+	display: flex;
+	align-items: center;
+	border-radius: $size-8;
+	font-size: 1.25em;
+	font-family: 'Roboto Mono', monospace;
+
+	&:has(input:focus) {
+		outline: 2px solid $bg-light-active;
+	}
+
+	&:hover {
+		outline: 1px solid $bg-light-active;
+	}
+
+	& > input {
+		background-color: transparent;
+		border: none;
+		padding-inline: 0;
+		padding-block: $size-8;
+		flex: 1;
+	}
+
+	& > button {
+		padding: $size-8 $size-12;
+		border: none;
+		background-color: transparent;
+		cursor: pointer;
+		font-weight: bold;
+	}
+
+	& > span {
+		padding: $size-8 $size-12;
+		font-weight: bold;
+	}
+}
+
+.page-title {
+	font-size: 2em;
+	font-weight: bold;
+	color: $font-color-light;
+	text-align: center;
+	margin-bottom: $size-8;
+}
+
+.page-sub-title {
+	font-size: 1.25em;
+	font-weight: normal;
+	color: $font-color-light;
+	text-align: center;
+	margin-top: 0;
+}

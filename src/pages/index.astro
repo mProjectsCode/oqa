@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CommandInput from '../components/CommandInput.svelte';
+import { flatCommands } from 'src/commands';
+---
+
+<script type="module"></script>
+
+<Layout title="Welcome to Astro.">
+	<main>
+		<h1 class="page-title">oqa</h1>
+		<h2 class="page-sub-title">Obsidian Quick Access</h2>
+
+		<CommandInput client:only="svelte" />
+
+		<p>Quickly access commonly used Obsidian related websites.</p>
+
+		<h3>Available Commands</h3>
+
+		<table>
+			<thead>
+				<tr>
+					<th>Command</th>
+					<th>Description</th>
+					<th>Parameter</th>
+				</tr>
+			</thead>
+			<tbody>
+				{
+					flatCommands.map(x => (
+						<tr>
+							<td>
+								<code class="code-inline">{x.keyword}</code>
+							</td>
+							<td>{x.description}</td>
+							<td>{x.argsType}</td>
+						</tr>
+					))
+				}
+			</tbody>
+		</table>
+
+		<h3>About</h3>
+
+		<p>Visit this project on <a href="https://github.com/mProjectsCode/ojt">GitHub</a>.</p>
+
+		<p>Heavily inspired by <a href="https://sjt.vercel.app/">sjt</a>.</p>
+	</main>
+</Layout>
