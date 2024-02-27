@@ -12,7 +12,7 @@
 		const commandRes = parseCommandStr(command);
 
 		if (commandRes.success) {
-			history.pushState({}, '/oqa');
+			history.pushState({}, '', '/oqa');
 			window.location.replace(commandRes.redirect);
 		} else {
 			error = commandRes;

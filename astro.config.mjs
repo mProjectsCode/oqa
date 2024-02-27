@@ -6,6 +6,6 @@ import svelte from '@astrojs/svelte';
 export default defineConfig({
 	output: 'static',
 	integrations: [svelte()],
-  site: 'https://www.moritzjung.dev',
-  base: '/oqa'
+	site: 'https://www.moritzjung.dev',
+	base: '/oqa',
 });
