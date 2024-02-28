@@ -1,7 +1,15 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import CommandInput from '../components/CommandInput.svelte';
-import { flatCommands } from 'src/commands';
+import { flatCommands, ActionCommand, ArgsType } from 'src/commands';
+
+function commandArgsToString(command: ActionCommand<any>) {
+	if (command.argsType === ArgsType.NONE) return '';
+
+	if (command.argsType === ArgsType.OPTIONAL) return ` [${command.argsDescription}]`;
+
+	return ` <${command.argsDescription}>`;
+}
 ---
 
 <script type="module"></script>
@@ -22,7 +30,6 @@ import { flatCommands } from 'src/commands';
 				<tr>
 					<th>Command</th>
 					<th>Description</th>
-					<th>Parameter</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -30,15 +37,22 @@ import { flatCommands } from 'src/commands';
 					flatCommands.map(x => (
 						<tr>
 							<td>
-								<code class="code-inline">{x.keyword}</code>
+								<code class="code-inline">
+									{x.keyword}
+									{commandArgsToString(x)}
+								</code>
 							</td>
 							<td>{x.description}</td>
-							<td>{x.argsType}</td>
 						</tr>
 					))
 				}
 			</tbody>
 		</table>
+
+		<p>
+			<code class="code-inline">&lt;argument&gt;</code> denotes a required argument. <br />
+			<code class="code-inline">[argument]</code> denotes an optional argument.
+		</p>
 
 		<h3>About</h3>
 

@@ -57,6 +57,7 @@ body {
 main {
 	max-width: 500px;
 	min-width: 500px;
+	margin-block: 64px;
 }
 
 hr {
@@ -579,6 +580,7 @@ ul {
 	color: $font-color-light;
 	text-align: center;
 	margin-bottom: $size-8;
+	margin-top: 0;
 }
 
 .page-sub-title {

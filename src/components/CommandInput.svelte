@@ -32,6 +32,7 @@
 	<span>oqa</span>
 	<input
 		bind:value={command}
+		aria-label="Command input"
 		type="text"
 		on:keydown={e => {
 			if (e.key === 'Enter') submitCommand(command);

@@ -17,6 +17,7 @@ export interface ActionCommandRequired<T> {
 	description: string;
 	parser: Parser<T>;
 	argsType: ArgsType.REQUIRED;
+	argsDescription: string;
 	getRedirect: (args: CommandParseResult<T>) => string;
 }
 
@@ -25,6 +26,7 @@ export interface ActionCommandOptional<T> {
 	description: string;
 	parser: Parser<T>;
 	argsType: ArgsType.OPTIONAL;
+	argsDescription: string;
 	getRedirect: (args: CommandParseResult<T | undefined>) => string;
 }
 
@@ -111,22 +113,37 @@ export const commands = [
 				keyword: 's',
 				description: 'Obsidian Stats Search',
 				argsType: ArgsType.REQUIRED,
+				argsDescription: 'Search term',
 				parser: P_UTILS.remaining(),
 				getRedirect: x => `https://www.moritzjung.dev/obsidian-stats/?s=${encodeURIComponent(x.result)}`,
 			}),
 			createAction({
 				keyword: 'p',
-				description: 'Obsidian Stats go to plugin page by id',
-				argsType: ArgsType.REQUIRED,
+				description: 'Obsidian Stats go to plugin page',
+				argsType: ArgsType.OPTIONAL,
+				argsDescription: 'Plugin id',
 				parser: P_UTILS.remaining(),
-				getRedirect: x => `https://www.moritzjung.dev/obsidian-stats/plugins/${slug(x.result)}/`,
+				getRedirect: x => {
+					if (x.result) {
+						return `https://www.moritzjung.dev/obsidian-stats/plugins/${slug(x.result)}/`;
+					} else {
+						return 'https://www.moritzjung.dev/obsidian-stats/pluginstats/';
+					}
+				},
 			}),
 			createAction({
 				keyword: 't',
-				description: 'Obsidian Stats go to theme page by name',
-				argsType: ArgsType.REQUIRED,
+				description: 'Obsidian Stats go to theme page',
+				argsType: ArgsType.OPTIONAL,
+				argsDescription: 'Theme name',
 				parser: P_UTILS.remaining(),
-				getRedirect: x => `https://www.moritzjung.dev/obsidian-stats/themes/${slug(x.result)}/`,
+				getRedirect: x => {
+					if (x.result) {
+						return `https://www.moritzjung.dev/obsidian-stats/themes/${slug(x.result)}/`;
+					} else {
+						return 'https://www.moritzjung.dev/obsidian-stats/themestats/';
+					}
+				},
 			}),
 		],
 	},
@@ -165,13 +182,15 @@ function createAction<T>(action: ActionCommand<T>): ActionCommand<T> {
 }
 
 function getEmptyCommandParser<T>(c: ActionCommandOptional<T> | ActionCommandNone): Parser<CommandParserResult<undefined>> {
-	return P.string(c.keyword).map(() => {
-		return {
-			commandChain: [],
-			lastCommand: c,
-			args: undefined,
-		};
-	}) as Parser<CommandParserResult<undefined>>;
+	return P.string(c.keyword)
+		.map(() => {
+			return {
+				commandChain: [],
+				lastCommand: c,
+				args: undefined,
+			};
+		})
+		.thenEof() as Parser<CommandParserResult<undefined>>;
 }
 
 function getArgsCommandParser<T>(c: ActionCommandRequired<T> | ActionCommandOptional<T>): Parser<CommandParserResult<T>> {
