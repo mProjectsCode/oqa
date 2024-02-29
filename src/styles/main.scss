@@ -13,14 +13,14 @@ $color-green: #badc58;
 $color-blue: #7ed6df;
 $color-purple: #e056fd;
 
-$accent-color: $color-green;
+$accent-color: $color-blue;
 
 $font-color-light: #f0f0f0;
 $font-color: #d0d0d0;
 $font-color-dark: #a0a0a0;
 
 $bg-color: #000000;
-$bg-color-2: #232330;
+$bg-color-2: #232323;
 
 $bg-light: #e0e0e0;
 $bg-light-active: #e0e0e0;
@@ -183,38 +183,6 @@ b {
 	color: red !important;
 }
 
-.card {
-	padding: $size-16;
-	margin: $size-8;
-	border-radius: $size-16;
-	border: 1px solid $bg-light;
-}
-
-.container {
-	padding: $size-48 $size-32;
-	border-radius: $size-16;
-	border: 1px solid $bg-light;
-
-	& > :first-child {
-		margin-top: 0;
-	}
-
-	& > :last-child {
-		margin-bottom: 0;
-	}
-}
-
-.container-list {
-	display: flex;
-	flex-direction: column;
-	gap: $size-8;
-}
-
-.code-input {
-	width: 100%;
-	resize: vertical;
-}
-
 table {
 	width: 100%;
 	border-collapse: collapse;
@@ -239,238 +207,7 @@ table {
 			padding: $size-8;
 			color: $font-color-dark;
 		}
-
-		&.text-error {
-			& > td {
-				color: $color-red;
-			}
-		}
-
-		&.text-warning {
-			& > td {
-				color: $color-orange;
-			}
-		}
-
-		&.text-danger {
-			& > td {
-				color: $color-yellow;
-			}
-		}
-
-		&.text-success {
-			& > td {
-				color: $color-green;
-			}
-		}
-
-		&.text-info {
-			& > td {
-				color: $color-blue;
-			}
-		}
 	}
-}
-
-.setting {
-	padding-block: $size-8;
-	border-bottom: 1px solid $bg-light;
-
-	.setting-items {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-
-		.setting-title {
-			padding-inline: $size-8;
-			flex: 1;
-
-			.setting-name {
-				color: $font-color;
-			}
-
-			.setting-description {
-				color: $font-color-dark;
-				font-size: small;
-			}
-		}
-
-		.setting-control-el {
-			padding-inline: $size-8;
-		}
-	}
-}
-
-.sub-setting-container {
-	margin-left: $size-16;
-}
-
-select {
-	background-color: transparent;
-	border: 1px solid $bg-light;
-	border-radius: $size-8;
-	padding: $size-8;
-	min-width: 200px;
-	color: $font-color;
-
-	&:hover {
-		border-color: $bg-light-active;
-	}
-
-	& > option {
-		padding: $size-8;
-		background-color: $bg-color;
-	}
-}
-
-.button {
-	padding: $size-8;
-	border: 1px solid $bg-light;
-	border-radius: $size-8;
-	background-color: transparent;
-	cursor: pointer;
-	color: $font-color;
-
-	&:disabled {
-		cursor: not-allowed;
-		color: $font-color-dark;
-	}
-
-	&:hover:not(:disabled) {
-		border-color: $bg-light-active;
-	}
-}
-
-.button-stealth {
-	padding: $size-8;
-	border-radius: $size-8;
-	background-color: transparent;
-	border: none;
-	cursor: pointer;
-	color: $font-color;
-
-	&:disabled {
-		cursor: not-allowed;
-		color: $font-color-dark;
-	}
-}
-
-.button-super-stealth {
-	padding: 0;
-	cursor: pointer;
-	border-radius: $size-8;
-	background-color: transparent;
-	border: none;
-	color: $font-color;
-}
-
-.button-link,
-a {
-	background-color: transparent;
-	border: none;
-	cursor: pointer;
-	color: $font-color;
-	text-decoration: underline;
-
-	&:disabled {
-		cursor: not-allowed;
-		color: $font-color-dark;
-	}
-
-	&:hover:not(:disabled) {
-		color: $font-color-light;
-	}
-}
-
-.button-flex {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	gap: $size-8;
-}
-
-.button-row-reverse {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: end;
-	gap: $size-8;
-	flex-wrap: wrap;
-	margin-block: $size-8;
-}
-
-.button-row {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: start;
-	gap: $size-8;
-	flex-wrap: wrap;
-	margin-block: $size-8;
-}
-
-.modal {
-	margin: auto !important;
-	min-width: 500px;
-	width: fit-content;
-	background: $bg-color;
-	position: relative;
-
-	.modal-close-icon-wrapper {
-		position: absolute;
-		top: 12px;
-		right: 12px;
-		border-radius: $size-8;
-	}
-}
-
-.switch {
-	position: relative;
-	display: inline-block;
-	width: 48px;
-	height: 24px;
-}
-
-.switch input {
-	opacity: 0;
-	width: 0;
-	height: 0;
-}
-
-.slider {
-	position: absolute;
-	cursor: pointer;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: $bg-light;
-	-webkit-transition: 0.1s;
-	transition: 0.1s;
-	border-radius: 24px;
-}
-
-.slider:before {
-	position: absolute;
-	content: '';
-	height: 16px;
-	width: 16px;
-	left: 4px;
-	bottom: 4px;
-	background-color: white;
-	-webkit-transition: 0.1s;
-	transition: 0.1s;
-	border-radius: 50%;
-}
-
-input:checked + .slider {
-	background-color: $bg-light-active;
-}
-
-input:checked + .slider:before {
-	-webkit-transform: translateX(24px);
-	-ms-transform: translateX(24px);
-	transform: translateX(24px);
 }
 
 pre {
@@ -485,39 +222,6 @@ pre {
 	background-color: $bg-color-2;
 	padding-inline: $size-4;
 	border-radius: $size-4;
-}
-
-input[type='text'] {
-	background-color: transparent;
-	border: 1px solid $bg-light;
-	border-radius: $size-8;
-	padding: $size-8;
-	min-width: 200px;
-	color: $font-color;
-
-	&:hover {
-		border-color: $bg-light-active;
-	}
-
-	&:focus {
-		border-color: $bg-light-active;
-	}
-}
-
-ul {
-	li {
-		margin-block: $size-4;
-
-		&::before {
-			// counter-increment: list-item;
-			content: '-';
-			margin-inline: $size-8;
-		}
-	}
-}
-
-.block {
-	margin-block: $size-4;
 }
 
 .scroll-top-wrapper {
@@ -577,11 +281,13 @@ ul {
 		background-color: transparent;
 		cursor: pointer;
 		font-weight: bold;
+		color: $font-color-light;
 	}
 
 	& > span {
 		padding: $size-8 $size-12;
 		font-weight: bold;
+		color: $font-color-light;
 	}
 }
 
@@ -605,8 +311,14 @@ ul {
 dialog {
 	padding: 0;
 	border: none;
-	border-radius: $size-8;
+	border-radius: $size-16;
 	background-color: $bg-color;
+
+	&::backdrop {
+		background-color: rgba(0, 0, 0, 0.5);
+		backdrop-filter: blur(4px);
+		-webkit-backdrop-filter: blur(4px);
+	}
 }
 
 dialog > .modal {
@@ -634,7 +346,12 @@ dialog > .modal {
 	& > .option-card-name {
 		display: block;
 		font-weight: bold;
-		color: $font-color;
+		color: $font-color-dark;
+		margin-bottom: $size-4;
+
+		& > mark {
+			color: $font-color-light;
+		}
 	}
 
 	& > .option-card-target {

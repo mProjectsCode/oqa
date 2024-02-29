@@ -1,4 +1,6 @@
 import FlexSearch from 'flexsearch';
+import uFuzzy from '@leeoniya/ufuzzy';
+import type { RedirectOption } from 'src/commands.ts';
 
 export enum SearchIndexName {
 	HELP = 'helpIndex',
@@ -43,26 +45,79 @@ export async function createIndex(indices: SearchIndex[], name: SearchIndexName)
 	return index;
 }
 
-export async function searchFirstResult(indices: SearchIndex[], name: SearchIndexName, query: string): Promise<string> {
+function sortResults(results: string[], query: string, limit: number): RedirectOption[] {
+	const fuzzy = new uFuzzy({});
+
+	const idxs = fuzzy.filter(results, query);
+	if (idxs === null) {
+		throw new Error('No search results found');
+	}
+
+	let info = fuzzy.info(idxs, results, query);
+	let order = fuzzy.sort(info, results, query);
+
+	let redirects: RedirectOption[] = [];
+	for (let i = 0; i < Math.min(order.length, limit); i++) {
+		const itemId = order[i];
+		const item = results[info.idx[itemId]];
+
+		redirects.push({
+			name: item,
+			target: '',
+			highlights: uFuzzy.highlight(
+				item,
+				info.ranges[itemId],
+				(part, matched) => [part, matched] as [string, boolean],
+				[] as [string, boolean][],
+				(accum, part) => {
+					accum.push(part);
+					return accum;
+				},
+			),
+		});
+	}
+
+	for (const result of results) {
+		if (redirects.length >= limit) {
+			break;
+		}
+
+		if (!redirects.some(redirect => redirect.name === result)) {
+			redirects.push({
+				name: result,
+				target: '',
+				highlights: [[result, false]],
+			});
+		}
+	}
+
+	console.log(results, redirects);
+
+	return redirects;
+}
+
+export async function searchFirstResult(indices: SearchIndex[], name: SearchIndexName, query: string): Promise<RedirectOption> {
 	const index = await createIndex(indices, name);
 
-	const result = index
-		.search(query, {
-			limit: 1,
-		})
-		.at(0);
+	const results = index.search(query).map(x => String(x));
+
+	if (results.length === 0) {
+		throw new Error('No search results found');
+	}
+
+	const result = sortResults(results, query, 1)[0];
 
 	if (result === undefined) {
 		throw new Error('No search results found');
 	}
 
-	return String(result);
+	return result;
 }
 
-export async function search(indices: SearchIndex[], name: SearchIndexName, query: string): Promise<string[]> {
+export async function search(indices: SearchIndex[], name: SearchIndexName, query: string): Promise<RedirectOption[]> {
 	const index = await createIndex(indices, name);
 
-	const result = index.search(query);
+	const results = index.search(query).map(key => String(key));
 
-	return result.map(key => String(key));
+	return sortResults(results, query, results.length);
 }

@@ -16,6 +16,7 @@ export enum ArgsType {
 export interface RedirectOption {
 	name: string;
 	target: string;
+	highlights: [string, boolean][];
 }
 
 export type Redirect = string | RedirectOption[] | Promise<string> | Promise<RedirectOption[]>;
@@ -175,10 +176,9 @@ export const commands = [
 					const result = await search(await x.context.getSearchIndices(), SearchIndexName.HELP, x.args);
 
 					return result.map(x => {
-						return {
-							name: x,
-							target: `https://help.obsidian.md/${x}`,
-						};
+						x.target = `https://help.obsidian.md/${x.name}`;
+
+						return x;
 					});
 				},
 			}),
@@ -191,7 +191,7 @@ export const commands = [
 				getRedirect: async x => {
 					const result = await searchFirstResult(await x.context.getSearchIndices(), SearchIndexName.HELP, x.args);
 
-					return `https://help.obsidian.md/${result}`;
+					return `https://help.obsidian.md/${result.name}`;
 				},
 			}),
 		],
@@ -215,10 +215,9 @@ export const commands = [
 					const result = await search(await x.context.getSearchIndices(), SearchIndexName.DOCS, x.args);
 
 					return result.map(x => {
-						return {
-							name: x,
-							target: `https://docs.obsidian.md/${x}`,
-						};
+						x.target = `https://docs.obsidian.md/${x.name}`;
+
+						return x;
 					});
 				},
 			}),
@@ -231,7 +230,7 @@ export const commands = [
 				getRedirect: async x => {
 					const result = await searchFirstResult(await x.context.getSearchIndices(), SearchIndexName.DOCS, x.args);
 
-					return `https://docs.obsidian.md/${result}`;
+					return `https://docs.obsidian.md/${result.name}`;
 				},
 			}),
 		],

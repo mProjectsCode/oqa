@@ -159,6 +159,7 @@
 				tabindex="0"
 				autofocus={i === 0}
 				on:click={() => redirect(r.target)}
+				role="link"
 				on:keydown={e => {
 					if (e.key === 'Enter' || e.key === ' ') {
 						redirect(r.target);
@@ -166,7 +167,15 @@
 					}
 				}}
 			>
-				<span class="option-card-name">{r.name}</span>
+				<span class="option-card-name">
+					{#each r.highlights as h}
+						{#if h[1] === true}
+							<mark>{h[0]}</mark>
+						{:else}
+							{h[0]}
+						{/if}
+					{/each}
+				</span>
 				<span class="option-card-target">{r.target}</span>
 			</div>
 		{/each}

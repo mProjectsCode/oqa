@@ -14,6 +14,7 @@
 	"dependencies": {
 		"@astrojs/check": "^0.5.6",
 		"@astrojs/svelte": "^5.1.0",
+		"@leeoniya/ufuzzy": "^1.0.14",
 		"@lemons_dev/parsinom": "^0.0.12",
 		"@types/slug": "^5.0.7",
 		"astro": "^4.4.5",
