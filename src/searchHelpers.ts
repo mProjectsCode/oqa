@@ -19,9 +19,9 @@ export interface EncodedIndex {
 }
 
 export async function createIndex(indices: SearchIndex[], name: SearchIndexName): Promise<FlexSearch.Index> {
-	const index = new FlexSearch.Index("default");
+	const index = new FlexSearch.Index('default');
 
-	const searchIndex = indices.find((index) => index.name === name);
+	const searchIndex = indices.find(index => index.name === name);
 
 	if (searchIndex === undefined) {
 		throw new Error(`Index ${name} not found`);
@@ -46,9 +46,11 @@ export async function createIndex(indices: SearchIndex[], name: SearchIndexName)
 export async function searchFirstResult(indices: SearchIndex[], name: SearchIndexName, query: string): Promise<string> {
 	const index = await createIndex(indices, name);
 
-	const result = index.search(query,{
-		limit: 1,
-	}).at(0);
+	const result = index
+		.search(query, {
+			limit: 1,
+		})
+		.at(0);
 
 	if (result === undefined) {
 		throw new Error('No search results found');
@@ -62,5 +64,5 @@ export async function search(indices: SearchIndex[], name: SearchIndexName, quer
 
 	const result = index.search(query);
 
-	return result.map((key) =>  String(key));
+	return result.map(key => String(key));
 }

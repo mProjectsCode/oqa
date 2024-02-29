@@ -3,7 +3,7 @@ import type { ParseFailure } from '@lemons_dev/parsinom/lib/HelperTypes';
 import { P_UTILS } from '@lemons_dev/parsinom/lib/ParserUtils';
 import { P } from '@lemons_dev/parsinom/lib/ParsiNOM';
 import slug from 'slug';
-import {search, searchFirstResult, type SearchIndex, SearchIndexName} from 'src/searchHelpers.ts';
+import { search, searchFirstResult, type SearchIndex, SearchIndexName } from 'src/searchHelpers.ts';
 
 type Tuple<T> = [T, ...T[]];
 
@@ -171,14 +171,14 @@ export const commands = [
 				argsType: ArgsType.REQUIRED,
 				argsDescription: 'Search term',
 				parser: P_UTILS.remaining(),
-				getRedirect: async (x) => {
+				getRedirect: async x => {
 					const result = await search(await x.context.getSearchIndices(), SearchIndexName.HELP, x.args);
 
 					return result.map(x => {
 						return {
 							name: x,
-							target: `https://help.obsidian.md/${x}`
-						}
+							target: `https://help.obsidian.md/${x}`,
+						};
 					});
 				},
 			}),
@@ -188,7 +188,7 @@ export const commands = [
 				argsType: ArgsType.REQUIRED,
 				argsDescription: 'Search term',
 				parser: P_UTILS.remaining(),
-				getRedirect: async (x) => {
+				getRedirect: async x => {
 					const result = await searchFirstResult(await x.context.getSearchIndices(), SearchIndexName.HELP, x.args);
 
 					return `https://help.obsidian.md/${result}`;
@@ -211,14 +211,14 @@ export const commands = [
 				argsType: ArgsType.REQUIRED,
 				argsDescription: 'Search term',
 				parser: P_UTILS.remaining(),
-				getRedirect: async (x) => {
+				getRedirect: async x => {
 					const result = await search(await x.context.getSearchIndices(), SearchIndexName.DOCS, x.args);
 
 					return result.map(x => {
 						return {
 							name: x,
-							target: `https://docs.obsidian.md/${x}`
-						}
+							target: `https://docs.obsidian.md/${x}`,
+						};
 					});
 				},
 			}),
@@ -228,7 +228,7 @@ export const commands = [
 				argsType: ArgsType.REQUIRED,
 				argsDescription: 'Search term',
 				parser: P_UTILS.remaining(),
-				getRedirect: async (x) => {
+				getRedirect: async x => {
 					const result = await searchFirstResult(await x.context.getSearchIndices(), SearchIndexName.DOCS, x.args);
 
 					return `https://docs.obsidian.md/${result}`;
@@ -324,7 +324,7 @@ export async function runCommandString(commandStr: string, context: CommandConte
 			redirect: await commandResult.lastCommand.getRedirect({
 				command: commandStr,
 				args: commandResult.args,
-				context: context
+				context: context,
 			}),
 		};
 	} catch (e) {
