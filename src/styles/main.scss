@@ -35,6 +35,13 @@ $size-24: 24px;
 $size-32: 32px;
 $size-48: 48px;
 
+$main-width: 500px;
+
+* {
+  scrollbar-color: $bg-color-2 $bg-color;
+  scrollbar-width: thin;
+}
+
 :root {
 	color-scheme: dark;
 }
@@ -55,9 +62,12 @@ body {
 }
 
 main {
-	max-width: 500px;
-	min-width: 500px;
+	max-width: $main-width;
+  width: $main-width;
+  min-width: 0;
+  flex: 1;
 	margin-block: 64px;
+  margin-inline: $size-8;
 }
 
 hr {
@@ -208,6 +218,7 @@ b {
 table {
 	width: 100%;
 	border-collapse: collapse;
+  overflow-x: auto;
 
 	& > thead {
 		& > tr > th {
@@ -589,4 +600,46 @@ ul {
 	color: $font-color-light;
 	text-align: center;
 	margin-top: 0;
+}
+
+dialog {
+  padding: 0;
+  border: none;
+  border-radius: $size-8;
+  background-color: $bg-color;
+}
+
+dialog > .modal {
+  display: flex;
+  flex-direction: column;
+  gap: $size-8;
+  padding: $size-16;
+  max-width: $main-width;
+}
+
+.option-card {
+  padding: $size-16;
+  border-radius: $size-16;
+  background-color: $bg-color-2;
+  cursor: pointer;
+
+  &:hover {
+    outline: 2px solid $bg-light-active;
+  }
+
+  &:focus {
+    outline: 2px solid $bg-light-active;
+  }
+
+  & > .option-card-name {
+    display: block;
+    font-weight: bold;
+    color: $font-color;
+  }
+
+  & > .option-card-target {
+    display: block;
+    color: $font-color-dark;
+    font-size: small;
+  }
 }

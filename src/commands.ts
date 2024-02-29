@@ -3,6 +3,7 @@ import type { ParseFailure } from '@lemons_dev/parsinom/lib/HelperTypes';
 import { P_UTILS } from '@lemons_dev/parsinom/lib/ParserUtils';
 import { P } from '@lemons_dev/parsinom/lib/ParsiNOM';
 import slug from 'slug';
+import {search, searchFirstResult, type SearchIndex, SearchIndexName} from 'src/searchHelpers.ts';
 
 type Tuple<T> = [T, ...T[]];
 
@@ -12,13 +13,20 @@ export enum ArgsType {
 	NONE = 'none',
 }
 
+export interface RedirectOption {
+	name: string;
+	target: string;
+}
+
+export type Redirect = string | RedirectOption[] | Promise<string> | Promise<RedirectOption[]>;
+
 export interface ActionCommandRequired<T> {
 	keyword: string;
 	description: string;
 	parser: Parser<T>;
 	argsType: ArgsType.REQUIRED;
 	argsDescription: string;
-	getRedirect: (args: CommandParseResult<T>) => string;
+	getRedirect: (args: CommandArgs<T>) => Redirect;
 }
 
 export interface ActionCommandOptional<T> {
@@ -27,14 +35,14 @@ export interface ActionCommandOptional<T> {
 	parser: Parser<T>;
 	argsType: ArgsType.OPTIONAL;
 	argsDescription: string;
-	getRedirect: (args: CommandParseResult<T | undefined>) => string;
+	getRedirect: (args: CommandArgs<T | undefined>) => Redirect;
 }
 
 export interface ActionCommandNone {
 	keyword: string;
 	description: string;
 	argsType: ArgsType.NONE;
-	getRedirect: (args: CommandParseResult<undefined>) => string;
+	getRedirect: (args: CommandArgs<undefined>) => Redirect;
 }
 
 export interface CommandGroup {
@@ -46,21 +54,22 @@ export type ActionCommand<T> = ActionCommandRequired<T> | ActionCommandOptional<
 
 export type Command<T> = ActionCommand<T> | CommandGroup;
 
-export interface CommandParseResult<T> {
-	str: string;
-	result: T;
+export interface CommandArgs<T> {
+	command: string;
+	args: T;
+	context: CommandContext;
 }
 
 export interface CommandSuccess {
 	success: true;
 	command: string;
-	redirect: string;
+	redirect: Awaited<Redirect>;
 }
 
 export interface CommandFailure {
 	success: false;
 	command: string;
-	error: ParseFailure;
+	error: ParseFailure | Error;
 }
 
 export type CommandResult = CommandSuccess | CommandFailure;
@@ -115,7 +124,7 @@ export const commands = [
 				argsType: ArgsType.REQUIRED,
 				argsDescription: 'Search term',
 				parser: P_UTILS.remaining(),
-				getRedirect: x => `https://www.moritzjung.dev/obsidian-stats/?s=${encodeURIComponent(x.result)}`,
+				getRedirect: x => `https://www.moritzjung.dev/obsidian-stats/?s=${encodeURIComponent(x.args)}`,
 			}),
 			createAction({
 				keyword: 'p',
@@ -124,8 +133,8 @@ export const commands = [
 				argsDescription: 'Plugin id',
 				parser: P_UTILS.remaining(),
 				getRedirect: x => {
-					if (x.result) {
-						return `https://www.moritzjung.dev/obsidian-stats/plugins/${slug(x.result)}/`;
+					if (x.args) {
+						return `https://www.moritzjung.dev/obsidian-stats/plugins/${slug(x.args)}/`;
 					} else {
 						return 'https://www.moritzjung.dev/obsidian-stats/pluginstats/';
 					}
@@ -138,8 +147,8 @@ export const commands = [
 				argsDescription: 'Theme name',
 				parser: P_UTILS.remaining(),
 				getRedirect: x => {
-					if (x.result) {
-						return `https://www.moritzjung.dev/obsidian-stats/themes/${slug(x.result)}/`;
+					if (x.args) {
+						return `https://www.moritzjung.dev/obsidian-stats/themes/${slug(x.args)}/`;
 					} else {
 						return 'https://www.moritzjung.dev/obsidian-stats/themestats/';
 					}
@@ -156,6 +165,35 @@ export const commands = [
 				argsType: ArgsType.NONE,
 				getRedirect: () => 'https://help.obsidian.md/Home',
 			}),
+			createAction({
+				keyword: 's',
+				description: 'Obsidian Docs Search',
+				argsType: ArgsType.REQUIRED,
+				argsDescription: 'Search term',
+				parser: P_UTILS.remaining(),
+				getRedirect: async (x) => {
+					const result = await search(await x.context.getSearchIndices(), SearchIndexName.HELP, x.args);
+
+					return result.map(x => {
+						return {
+							name: x,
+							target: `https://help.obsidian.md/${x}`
+						}
+					});
+				},
+			}),
+			createAction({
+				keyword: 'qs',
+				description: 'Obsidian Help Quick Search',
+				argsType: ArgsType.REQUIRED,
+				argsDescription: 'Search term',
+				parser: P_UTILS.remaining(),
+				getRedirect: async (x) => {
+					const result = await searchFirstResult(await x.context.getSearchIndices(), SearchIndexName.HELP, x.args);
+
+					return `https://help.obsidian.md/${result}`;
+				},
+			}),
 		],
 	},
 	{
@@ -166,6 +204,35 @@ export const commands = [
 				description: 'Obsidian Docs Index',
 				argsType: ArgsType.NONE,
 				getRedirect: () => 'https://docs.obsidian.md/Home',
+			}),
+			createAction({
+				keyword: 's',
+				description: 'Obsidian Docs Search',
+				argsType: ArgsType.REQUIRED,
+				argsDescription: 'Search term',
+				parser: P_UTILS.remaining(),
+				getRedirect: async (x) => {
+					const result = await search(await x.context.getSearchIndices(), SearchIndexName.DOCS, x.args);
+
+					return result.map(x => {
+						return {
+							name: x,
+							target: `https://docs.obsidian.md/${x}`
+						}
+					});
+				},
+			}),
+			createAction({
+				keyword: 'qs',
+				description: 'Obsidian Docs Quick Search',
+				argsType: ArgsType.REQUIRED,
+				argsDescription: 'Search term',
+				parser: P_UTILS.remaining(),
+				getRedirect: async (x) => {
+					const result = await searchFirstResult(await x.context.getSearchIndices(), SearchIndexName.DOCS, x.args);
+
+					return `https://docs.obsidian.md/${result}`;
+				},
 			}),
 		],
 	},
@@ -231,7 +298,11 @@ function generateCommandParser(commands: Command<unknown>[]): Parser<CommandPars
 
 const commandParser = generateCommandParser(commands);
 
-export function parseCommandStr(commandStr: string): CommandResult {
+export interface CommandContext {
+	getSearchIndices: () => Promise<SearchIndex[]>;
+}
+
+export async function runCommandString(commandStr: string, context: CommandContext): Promise<CommandResult> {
 	const commandParse = commandParser.tryParse(commandStr);
 
 	if (!commandParse.success) {
@@ -246,14 +317,23 @@ export function parseCommandStr(commandStr: string): CommandResult {
 
 	console.log(commandResult);
 
-	return {
-		success: true,
-		command: commandStr,
-		redirect: commandResult.lastCommand.getRedirect({
-			str: commandStr,
-			result: commandResult.args,
-		}),
-	};
+	try {
+		return {
+			success: true,
+			command: commandStr,
+			redirect: await commandResult.lastCommand.getRedirect({
+				command: commandStr,
+				args: commandResult.args,
+				context: context
+			}),
+		};
+	} catch (e) {
+		return {
+			success: false,
+			command: commandStr,
+			error: e instanceof Error ? e : new Error(e as string),
+		};
+	}
 }
 
 export function flattenCommands(command: Command<any>, keywordList: string[] = []): ActionCommand<any>[] {
